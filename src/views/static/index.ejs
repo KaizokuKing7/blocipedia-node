@@ -11,7 +11,11 @@
         <header class="jumbotron my-4">
             <h1 class="display-3">Welcome to Blocipedia</h1>
             <p class="lead">An application for users to share information.</p>
+            <% if(currentUser) { %>
+                <a href="/user/sign_out" class="btn btn-primary btn-lg">Sign out</a>
+                <% } else { %>
             <a href="/user/sign_up" class="btn btn-primary btn-lg">Sign up</a>
+            <% }%>
         </header>
 
         <section class="row text-center">
