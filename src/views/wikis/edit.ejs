@@ -8,7 +8,7 @@
     <main class="container">
         <% include ../static/partials/messages.ejs %>
         <h1><label>Edit Wiki</label></h1>
-        <form method="POST" action="/wikis/<$= wiki.id $>/update">
+        <form method="POST" action="/wikis/<%= wiki.id %>/update">
             <div class="form-group">
                 <label>Title:</label>
                 <input value="<%= wiki.title%>" type="text" name="title" placeholder="Enter title" class="form-control" />
@@ -19,13 +19,21 @@
             </div>
             <div class="form-group">
                     <label for="private">Do you want this Wiki to be private?</label>
-                    <select class="form-control" name="private">
-                      <option value=true>Yes</option>
-                      <option value=false>No</option>
+                    <select class="form-control" name="private" >
+                        <% if (wiki.private) {%>
+                      <option value=true selected>Yes</option>
+                      <option value=false >No</option>
+                      <%} else {%>
+                      <option value=true >Yes</option>
+                      <option value=false selected >No</option>
+                      <%}%>
                     </select>
             </div>
             <br />
-            <input type="submit" value="Create Wiki" class="btn btn-primary" />
+            <input type="submit" value="Update Wiki" class="btn btn-primary" />
+        </form>
+        <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
         </form>
     </main>
     <% include ../static/partials/baseScripts.ejs %>

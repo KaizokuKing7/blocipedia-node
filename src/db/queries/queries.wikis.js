@@ -1,6 +1,6 @@
 const Wiki = require("../models").Wiki;
 const User = require("../models").User;
-
+const Authorizer = require("../../policies/application");
 
 module.exports = {
     createWiki (newWiki, callback) {
@@ -13,7 +13,7 @@ module.exports = {
         })
     },
     getWiki(id, callback){
-        Wiki.findOne({where: {id}})
+        return Wiki.findOne({where: {id}})
         .then((wiki)=>{
             callback(null,wiki);
         })
@@ -21,10 +21,31 @@ module.exports = {
             callback(err);
         })
     },
-    updateWiki(req,updatedWiki, callback){
-        return Wiki.findOne({where : {id : req.params.id}})
+    updateWiki(id,updatedWiki, callback){
+        return Wiki.findOne({where : {id}})
         .then((wiki) =>{
-            console.log(wiki)
+            if (!wiki) {
+                return callback("Wiki not found");
+            }
+            wiki.update(updatedWiki, {
+                fields: Object.keys(updatedWiki)
+            })
+            .then(()=>{
+                callback(null,wiki);
+            })
+            .catch((err)=>{
+                callback(err);
+            })
+        })
+    },
+    deleteWiki(req,callback){
+        return Wiki.destroy({where: {id: req.params.id}})
+        .then((deletededCount)=>{
+            callback(null,deletededCount);
+        })
+        .catch((err)=>{
+            callback(err);
         })
     }
+
 }
