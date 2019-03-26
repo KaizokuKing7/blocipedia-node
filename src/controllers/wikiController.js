@@ -63,15 +63,24 @@ module.exports = {
         })
     },
     delete(req, res, next) {
-        wikiqueries.deleteWiki(req, (err, wiki) => {
-            if (err) {
-                res.redirect(
-                    typeof err === "number" ? err : 500,
-                    `/wikis/${req.params.id}`
-                )
-            } else {
-                res.redirect(303, "/wikis")
-            }
-        });
+        Wiki.findOne({where: {id: req.params.id}}).then((wiki)=>{
+          const authorized = new Authorizer(req.user, wiki).delete();
+        if (authorized) {
+            wikiqueries.deleteWiki(req, (err, wiki) => {
+                if (err) {
+                    res.redirect(
+                        typeof err === "number" ? err : 500,
+                        `/wikis/${req.params.id}`
+                    )
+                } else {
+                    res.redirect(303, "/wikis")
+                }
+            });
+        } else {
+            req.flash("notice", "You don't have permission to do that.");
+            res.redirect(`/wikis/${req.params.id}/edit`);
+        }  
+        })
+        
     }
 }
