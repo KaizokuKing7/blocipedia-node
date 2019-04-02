@@ -20,13 +20,23 @@
                 <label for="body">Body</label>
                 <textarea rows="4" class="form-control" name="body" placeholder="Enter Body"></textarea>
             </div>
-            <div class="form-group">
+            <% if (currentUser.role == 1) {%>
+                <div class="form-group">
                     <label for="private">Do you want this Wiki to be private?</label>
                     <select class="form-control" name="private">
                       <option value=true>Yes</option>
                       <option value=false>No</option>
                     </select>
             </div>
+            <%} else {%>
+                <div class="form-group">
+                    <label for="private">You must upgrade to Premiumm to make private wikis.</label>
+                    <select class="form-control" disabled name="private">
+                      <option value=false>No</option>
+                      <option value=true>Yes</option>
+                    </select>
+            </div>            
+            <%}%>
             <br />
             <input type="submit" value="Create Wiki" class="btn btn-primary" />
         </form>

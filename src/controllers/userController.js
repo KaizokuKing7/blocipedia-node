@@ -1,7 +1,10 @@
 const userQueries = require("../db/queries/queries.users");
 const passport = require("passport");
 const sgMail = require('@sendgrid/mail');
+const stripe = require("stripe")("sk_test_nEhekw8wOIzL6ymdxchTujEu00m58aSKyL");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
 module.exports = {
     signUpForm(req, res, next) {        
         res.render("users/sign_up")
@@ -52,5 +55,32 @@ module.exports = {
         req.logout();
         req.flash("notice", "You've successfully signed out!");
         res.redirect("/");
-      }
+      },
+      info(req,res,next){
+          res.render("users/info")
+      },
+      upgrade(req,res,next){
+            const charge = stripe.charges.create({
+                amount: 1000,
+                currency: "usd",
+                description: "Blocipedia Premium",
+                source: req.body.stripeToken
+            })
+                req.user.update({role: 1})
+                .then(() => {
+                    res.redirect(`/user/${req.user.id}/info`);
+                })
+                .catch((err)=> {
+                    console.log(err)
+                })
+      },
+      downgrade(req,res,next){
+            req.user.update({role: 0})
+            .then(() => {
+                res.redirect(`/user/${req.user.id}/info`);
+            })
+            .catch((err)=> {
+                console.log(err)
+            })
+  }
 }

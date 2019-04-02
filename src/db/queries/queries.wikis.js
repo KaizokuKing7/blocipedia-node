@@ -3,7 +3,7 @@ const User = require("../models").User;
 const Authorizer = require("../../policies/application");
 
 module.exports = {
-    createWiki (newWiki, callback) {
+    createWiki(newWiki, callback) {
         return Wiki.create(newWiki)
         .then((wiki) => {
             callback(null,wiki)

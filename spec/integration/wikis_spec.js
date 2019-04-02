@@ -55,6 +55,10 @@ describe("Wiki", () => {
                         expect(wiki).not.toBeNull;
                         done();
                     })
+                    .catch((err) => {
+                        console.log(err)
+                        done()
+                    })
             })
         })
     });

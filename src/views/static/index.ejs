@@ -12,6 +12,7 @@
             <h1 class="display-3">Welcome to Blocipedia</h1>
             <p class="lead">An application for users to share information.</p>
             <% if(currentUser) { %>
+                <a href="/user/<%= currentUser.id %>/info" class="btn btn-primary btn-lg">View Account</a>
                 <a href="/user/sign_out" class="btn btn-primary btn-lg">Sign out</a>
                 <% } else { %>
             <a href="/user/sign_up" class="btn btn-primary btn-lg">Sign up</a>
