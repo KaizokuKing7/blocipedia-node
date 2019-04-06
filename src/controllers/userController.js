@@ -76,8 +76,16 @@ module.exports = {
       },
       downgrade(req,res,next){
             req.user.update({role: 0})
-            .then(() => {
-                res.redirect(`/user/${req.user.id}/info`);
+            .then(()=> {
+                    return req.user.getWikis()
+                    .then((wikis)=> {
+                        wikis.forEach((wiki)=> {
+                            if (wiki.private) {
+                                wiki.update({private: false})
+                            }
+                        })
+                        res.redirect(`/user/${req.user.id}/info`);
+                    })
             })
             .catch((err)=> {
                 console.log(err)

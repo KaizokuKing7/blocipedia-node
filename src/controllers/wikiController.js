@@ -19,8 +19,6 @@ module.exports = {
             userId: req.user.id
         };
         wikiqueries.createWiki(newWiki, (err, wiki) => {
-            console.log(newWiki);
-            console.log("stuck here")
             if (err) {
                 res.redirect(500, "/wikis/new");
             } else {

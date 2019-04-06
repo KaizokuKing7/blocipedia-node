@@ -5,6 +5,9 @@ module.exports = class ApplicationPolicy {
         this.user = user;
         this.record = record;
     }
+    _isAdmin() {
+        return  !!this.user && (this.user.role == 2);
+    }
     _isOwner() {
         return this.record && (this.record.userId == this.user.id);
     }
@@ -21,6 +24,8 @@ module.exports = class ApplicationPolicy {
         return this.new() && this.record;
     }
     delete() {
-        return this.new() && this.record && this._isOwner();
+        console.log(!!this.user)
+        console.log(this.user)
+        return this.record && (this._isOwner() || this._isAdmin());
     }
 }
