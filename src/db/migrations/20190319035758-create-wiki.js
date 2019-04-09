@@ -28,14 +28,6 @@ module.exports = {
           as: "userId"
         }
       },
-      CollabId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Users",
-          key: "id",
-          as: "CollabId"
-        }
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
