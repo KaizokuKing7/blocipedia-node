@@ -16,12 +16,19 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    CollabId: {
+        type: DataTypes.INTEGER
     }
   }, {});
   Wiki.associate = function(models) {
     // associations can be defined here
     Wiki.belongsTo(models.User, {
         foreignKey: "userId"
+    });
+    Wiki.belongsToMany(models.User, {
+        foreignKey: "CollabId",
+        as: "collabs"
     });
   };
   return Wiki;

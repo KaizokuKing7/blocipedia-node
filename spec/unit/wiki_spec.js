@@ -29,7 +29,7 @@ describe("Wiki", () => {
                 title: "The galaxy",
                 body: "From eath to the stars",
                 userId: this.user.id,
-                private: true
+                private: true,
             })
                 .then((wiki) => {
                     expect(wiki.body).toBe("From eath to the stars");
