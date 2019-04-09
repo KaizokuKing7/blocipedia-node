@@ -11,13 +11,12 @@
     <main class="container">
             <% include ../static/partials/messages.ejs %>
             <div style="display: flex; align-items:center;"></div>
-                    <h1><%= wiki.title %></h1>
+                    <h1><%- wikiToMarkdown.title %></h1>
                   </div>
         <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
         <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="wiki">
-        <p><%= wiki.body %></p>
+        <p ><%- wikiToMarkdown.body %></p>
     </main>
-
     <% include ../static/partials/baseScripts.ejs %>
 
 </body>
