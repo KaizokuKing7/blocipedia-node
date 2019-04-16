@@ -13,25 +13,31 @@
         <a class="btn btn-primary" href="/wikis/new">Create Wiki</a>
         <div class="list-group">
             <br>
-            <% if (!currentUser) { wikis.forEach((wiki) => { if (!wiki.private){%>
+            <% wikis.forEach((wiki)=> {if(!wiki.private){ %>
+                <a href="/wikis/<%=wiki.id%>" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1"><%=wiki.title%></h5>
+                    </div>
+                </a>
+                <% }})  %>
+                <br />
+
+            <h2 class="list-group-item"> Private Wikis</h2>
+            <% if (currentUser) { wikis.forEach((wiki) => { if(wiki.private && wiki.userId == currentUser.id){ %>
             <a href="/wikis/<%=wiki.id%>" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1"><%=wiki.title%></h5>
                 </div>
             </a>
-            <%}})} else if (currentUser.role <= 1) { wikis.forEach((wiki) => { if (wiki.userId == currentUser.id || !wiki.private){  %>
+            <% }})} %>
+            <% if (currentUser){wikis.forEach((wiki) => {wiki.getCollaborators().then(collaborators => {collaborators.forEach(collab => {if(collab.userId == currentUser.id){ %>
             <a href="/wikis/<%=wiki.id%>" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1"><%=wiki.title%></h5>
                 </div>
             </a>
-            <% }})} else { wikis.forEach((wiki) => { %>
-            <a href="/wikis/<%=wiki.id%>" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1"><%=wiki.title%></h5>
-                </div>
-            </a>
-            <%})} %>
+            <%}});})});} %>
+
         </div>
     </main>
     <% include ../static/partials/baseScripts.ejs %>

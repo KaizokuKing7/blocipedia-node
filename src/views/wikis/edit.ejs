@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="private">Do you want this Wiki to be private?</label>
                 <% if ((currentUser.id == wiki.userId && currentUser.role == 1) || currentUser.role == 2){ %>
-                <select class="form-control"  name="private">
+                <select class="form-control" name="private">
                     <%} else {%>
                     <select class="form-control" disabled name="private">
                         <%}%>
@@ -42,6 +42,38 @@
         <form style="display:initial" action="/wikis/<%= wiki.id %>/delete" method="post">
                         <button type="submit" class="btn btn-danger">Delete</button>
         </form>
+        <% if(wiki.private) { %>
+          <div>
+            <h3>All Collaborators</h3>
+            <br />
+            <form method="POST" action="/wikis/<%= wiki.id %>/edit/collabs">
+                <div class="form-group">
+                    <label>Add Collaborator</label>
+                    <input type="text" name="username" placeholder="Enter Username"
+                        class="form-control" />
+                </div>
+                <br />
+            <input type="submit" value="Add Collaborator" class="btn btn-primary" />
+            </form>
+            <br />
+            <ul class="list-group d-inline-flex p-2 list-group-horizontal">
+
+                <% collaborators.forEach((user)=> { %>
+                    <li class="list-group-item d-flex p-2">
+                        <span><%= user.username%></span>
+                        <form style="display:initial" action="/wikis/<%= wiki.id %>/edit/collabs/<%= user.id%>/delete" method="post">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                     
+                    </li>
+                    
+            <% }) %>
+
+            </ul>
+
+        </div>  
+        <% } %>
+        
     </main>
     <% include ../static/partials/baseScripts.ejs %>
 </body>

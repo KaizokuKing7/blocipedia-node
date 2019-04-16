@@ -13,9 +13,13 @@
             <div style="display: flex; align-items:center;"></div>
                     <h1><%- wikiToMarkdown.title %></h1>
                   </div>
+            <% wiki.getCollaborators().then(x => { %>
+            <a> aa</a>
+        <%} )%>
         <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
         <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="wiki">
         <p ><%- wikiToMarkdown.body %></p>
+        
     </main>
     <% include ../static/partials/baseScripts.ejs %>
 

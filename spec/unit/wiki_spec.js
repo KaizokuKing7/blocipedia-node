@@ -1,7 +1,7 @@
 const sequelize = require("../../src/db/models/index").sequelize;
 const Wiki = require("../../src/db/models").Wiki;
 const User = require("../../src/db/models").User;
-
+const collab = require("../../src/db/models").Collaborator;
 describe("Wiki", () => {
     beforeEach((done) => {
         this.user;
@@ -15,7 +15,6 @@ describe("Wiki", () => {
                     password: "password"
                 }).then((user) => {
                     this.user = user;
-                    done();
                 })
                     .catch((err) => {
                         console.log(err)
@@ -32,6 +31,22 @@ describe("Wiki", () => {
                 private: true
             })
                 .then((wiki) => {
+                    collab.create({
+                        wikiId: 1,
+                        userId: 1,
+                    })
+                        .then(collab.create({
+                            wikiId: 1,
+                            userId: 2,
+                        })).then(wiki.countCollaborators().then(x => console.log(x)))
+
+
+
+                    for (let assoc of Object.keys(Wiki.associations)) {
+                        for (let accessor of Object.keys(Wiki.associations[assoc].accessors)) {
+                            console.log(Wiki.name + '.' + Wiki.associations[assoc].accessors[accessor] + '()');
+                        }
+                    }
                     expect(wiki.body).toBe("From eath to the stars");
                     expect(wiki.title).toBe("The galaxy");
                     expect(wiki.userId).toBe(this.user.id);
@@ -52,7 +67,7 @@ describe("Wiki", () => {
                 private: true
             })
                 .then((wiki) => {
-                    wiki.getUser()
+                    wiki.getOwner()
                         .then((associatedUser) => {
                             expect(associatedUser.email).toBe("bob@example.com");
                             done();

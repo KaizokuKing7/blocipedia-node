@@ -2,6 +2,7 @@ const wikiqueries = require("../db/queries/queries.wikis");
 const Authorizer = require("../policies/application");
 const Wiki = require("../db/models").Wiki;
 const markdown = require( "markdown" ).markdown;
+const Collab = require("../db/models").Collaborator;
 module.exports = {
     index(req, res, next) {
         Wiki.findAll()
@@ -48,11 +49,15 @@ module.exports = {
             } else {
                 const authorized = new Authorizer(req.user, wiki).edit();
                 if (authorized) {
-                    res.render("wikis/edit", { wiki });
+                    wiki.getCollaborators().then(collaborators=>{
+                        res.render("wikis/edit", { wiki, collaborators})
+                    })
+                    
                 } else {
                     req.flash("notice", "You don't have permission to do that.");
                     res.redirect(`/wikis/${req.params.id}`);
                 }
+                
             }
 
         })
